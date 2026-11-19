@@ -30,16 +30,19 @@
         <activity
             android:name=".view.TaskFormActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".view.EventFormActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".view.BudgetActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity" />
 
         <activity
@@ -50,6 +53,7 @@
         <activity
             android:name=".view.CompareStudySpotsActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity" />
 
         <activity

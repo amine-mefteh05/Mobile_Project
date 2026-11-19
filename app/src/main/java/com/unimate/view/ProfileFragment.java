@@ -2,20 +2,22 @@ package com.unimate.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.slider.Slider;
+import com.google.android.material.snackbar.Snackbar;
 import com.unimate.R;
 import com.unimate.controller.BudgetController;
 import com.unimate.controller.PlannerController;
@@ -25,17 +27,20 @@ import com.unimate.dto.WeeklySummary;
 import com.unimate.dto.Weights;
 import com.unimate.intelligence.RecommendationEngine;
 import com.unimate.model.Student;
+import com.unimate.view.ui.UiKit;
 
+import java.time.LocalTime;
 import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
     private EditText editName, editUniv, editLevel, editDayStart, editDayEnd;
-    private SeekBar seekQuiet, seekWifi, seekBudget, seekDistance;
+    private Slider seekQuiet, seekWifi, seekBudget, seekDistance;
     private TextView textQuietVal, textWifiVal, textBudgetVal, textDistanceVal;
-    private SwitchMaterial switchNotifs;
-    private Button btnSaveProfile, btnOpenBudget;
-    private TextView textSummaryTasks, textSummaryStudyHours, textSummarySpent;
+    private TextView textInitials, textDisplayName, textMeta, textBudgetCaption;
+    private View statTasks, statStudy, statSpent;
+    private MaterialSwitch switchNotifs;
+    private View btnSaveProfile, btnOpenBudget;
 
     private PreferencesManager prefsManager;
     private TaskController taskController;
@@ -53,7 +58,7 @@ public class ProfileFragment extends Fragment {
         budgetController = new BudgetController(requireContext());
 
         initViews(view);
-        setupSeekBars();
+        setupSliders();
         setupClickListeners();
 
         return view;
@@ -82,43 +87,69 @@ public class ProfileFragment extends Fragment {
         textBudgetVal = view.findViewById(R.id.textBudgetWeightVal);
         textDistanceVal = view.findViewById(R.id.textDistanceWeightVal);
 
+        textInitials = view.findViewById(R.id.textProfileInitials);
+        textDisplayName = view.findViewById(R.id.textProfileDisplayName);
+        textMeta = view.findViewById(R.id.textProfileMeta);
+        textBudgetCaption = view.findViewById(R.id.textProfileBudgetCaption);
+
+        statTasks = view.findViewById(R.id.statProfileTasks);
+        statStudy = view.findViewById(R.id.statProfileStudy);
+        statSpent = view.findViewById(R.id.statProfileSpent);
+
         switchNotifs = view.findViewById(R.id.switchProfileNotifs);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
         btnOpenBudget = view.findViewById(R.id.btnProfileOpenBudget);
 
-        textSummaryTasks = view.findViewById(R.id.textSummaryTasks);
-        textSummaryStudyHours = view.findViewById(R.id.textSummaryStudyHours);
-        textSummarySpent = view.findViewById(R.id.textSummarySpent);
+        // Keep the identity header in sync while the user types.
+        TextWatcher identityWatcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void afterTextChanged(Editable s) { bindIdentity(); }
+        };
+        editName.addTextChangedListener(identityWatcher);
+        editUniv.addTextChangedListener(identityWatcher);
+        editLevel.addTextChangedListener(identityWatcher);
     }
 
-    private void setupSeekBars() {
-        setupSeekBarListener(seekQuiet, textQuietVal);
-        setupSeekBarListener(seekWifi, textWifiVal);
-        setupSeekBarListener(seekBudget, textBudgetVal);
-        setupSeekBarListener(seekDistance, textDistanceVal);
+    private void setupSliders() {
+        bindSliderValue(seekQuiet, textQuietVal);
+        bindSliderValue(seekWifi, textWifiVal);
+        bindSliderValue(seekBudget, textBudgetVal);
+        bindSliderValue(seekDistance, textDistanceVal);
     }
 
-    private void setupSeekBarListener(SeekBar seekBar, TextView textView) {
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textView.setText(String.valueOf(progress));
-            }
+    private void bindSliderValue(Slider slider, TextView valueView) {
+        slider.addOnChangeListener((s, value, fromUser) -> valueView.setText(String.valueOf(Math.round(value))));
+    }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
+    private static void setSlider(Slider slider, int value) {
+        slider.setValue(Math.max(0, Math.min(100, value)));
     }
 
     private void setupClickListeners() {
         btnSaveProfile.setOnClickListener(v -> saveProfileData());
-        btnOpenBudget.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), BudgetActivity.class);
-            startActivity(intent);
-        });
+        btnOpenBudget.setOnClickListener(v -> startActivity(new Intent(requireContext(), BudgetActivity.class)));
+
+        editDayStart.setOnClickListener(v -> UiKit.pickTime(requireActivity(), "Study day starts",
+                editDayStart.getText().toString(), editDayStart::setText));
+        editDayEnd.setOnClickListener(v -> UiKit.pickTime(requireActivity(), "Study day ends",
+                editDayEnd.getText().toString(), editDayEnd::setText));
+    }
+
+    private void bindIdentity() {
+        String name = editName.getText().toString().trim();
+        String univ = editUniv.getText().toString().trim();
+        String level = editLevel.getText().toString().trim();
+
+        textInitials.setText(UiKit.initials(name));
+        textDisplayName.setText(name.isEmpty() ? "Your name" : name);
+
+        String meta;
+        if (!univ.isEmpty() && !level.isEmpty()) meta = univ + " · " + level;
+        else if (!univ.isEmpty()) meta = univ;
+        else if (!level.isEmpty()) meta = level;
+        else meta = "Add your university and year";
+        textMeta.setText(meta);
     }
 
     private void loadProfileData() {
@@ -129,21 +160,19 @@ public class ProfileFragment extends Fragment {
         editDayStart.setText(student.getDayStart());
         editDayEnd.setText(student.getDayEnd());
         switchNotifs.setChecked(student.isNotificationsEnabled());
+        bindIdentity();
 
         Weights weights = prefsManager.getWeights();
-        seekQuiet.setProgress(weights.getQuietWeight());
-        textQuietVal.setText(String.valueOf(weights.getQuietWeight()));
+        setSlider(seekQuiet, weights.getQuietWeight());
+        setSlider(seekWifi, weights.getWifiWeight());
+        setSlider(seekBudget, weights.getBudgetWeight());
+        setSlider(seekDistance, weights.getDistanceWeight());
+        textQuietVal.setText(String.valueOf(Math.round(seekQuiet.getValue())));
+        textWifiVal.setText(String.valueOf(Math.round(seekWifi.getValue())));
+        textBudgetVal.setText(String.valueOf(Math.round(seekBudget.getValue())));
+        textDistanceVal.setText(String.valueOf(Math.round(seekDistance.getValue())));
 
-        seekWifi.setProgress(weights.getWifiWeight());
-        textWifiVal.setText(String.valueOf(weights.getWifiWeight()));
-
-        seekBudget.setProgress(weights.getBudgetWeight());
-        textBudgetVal.setText(String.valueOf(weights.getBudgetWeight()));
-
-        seekDistance.setProgress(weights.getDistanceWeight());
-        textDistanceVal.setText(String.valueOf(weights.getDistanceWeight()));
-
-        // Weekly Productivity Summary
+        // Weekly productivity summary
         WeeklySummary summary = RecommendationEngine.weeklySummary(
                 taskController.getPendingTasks(),
                 plannerController.getAllEvents(),
@@ -151,32 +180,71 @@ public class ProfileFragment extends Fragment {
         );
 
         if (summary != null) {
-            textSummaryTasks.setText(String.format(Locale.getDefault(), "Completed: %d/%d (%.0f%%)",
-                    summary.getCompletedTasks(), summary.getTotalTasks(), summary.getCompletionRate()));
-            textSummaryStudyHours.setText(String.format(Locale.getDefault(), "Study Sessions: %.1f hrs", summary.getTotalStudyHours()));
-            textSummarySpent.setText(String.format(Locale.getDefault(), "Spent This Week: %.2f TND", summary.getTotalSpent()));
+            bindStat(statTasks, summary.getCompletedTasks() + "/" + summary.getTotalTasks(), "Tasks done",
+                    (int) Math.round(summary.getCompletionRate()));
+            bindStat(statStudy, String.format(Locale.getDefault(), "%.1fh", summary.getTotalStudyHours()),
+                    "Study time", -1);
+            bindStat(statSpent, String.format(Locale.getDefault(), "%.0f", summary.getTotalSpent()),
+                    "TND spent", -1);
+        }
+
+        double limit = budgetController.getWeeklyBudgetLimit();
+        double spent = budgetController.getCurrentWeekSpent();
+        textBudgetCaption.setText(String.format(Locale.getDefault(), "%.2f of %.2f TND spent", spent, limit));
+    }
+
+    private void bindStat(View tile, String value, String label, int progress) {
+        ((TextView) tile.findViewById(R.id.statValue)).setText(value);
+        ((TextView) tile.findViewById(R.id.statLabel)).setText(label);
+        LinearProgressIndicator bar = tile.findViewById(R.id.statProgress);
+        if (progress >= 0) {
+            bar.setVisibility(View.VISIBLE);
+            bar.setProgressCompat(Math.max(0, Math.min(100, progress)), false);
+        } else {
+            bar.setVisibility(View.GONE);
         }
     }
 
     private void saveProfileData() {
+        String dayStart = editDayStart.getText().toString().trim();
+        String dayEnd = editDayEnd.getText().toString().trim();
+        try {
+            if (!LocalTime.parse(dayStart).isBefore(LocalTime.parse(dayEnd))) {
+                showMessage("Your study day must end after it starts.");
+                return;
+            }
+        } catch (Exception e) {
+            showMessage("Pick a start and end time for your study day.");
+            return;
+        }
+
         Student student = prefsManager.getStudentProfile();
         student.setName(editName.getText().toString().trim());
         student.setUniversity(editUniv.getText().toString().trim());
         student.setStudyLevel(editLevel.getText().toString().trim());
-        student.setDayStart(editDayStart.getText().toString().trim());
-        student.setDayEnd(editDayEnd.getText().toString().trim());
+        student.setDayStart(dayStart);
+        student.setDayEnd(dayEnd);
         student.setNotificationsEnabled(switchNotifs.isChecked());
 
         prefsManager.saveStudentProfile(student);
 
         Weights weights = new Weights(
-                seekQuiet.getProgress(),
-                seekWifi.getProgress(),
-                seekBudget.getProgress(),
-                seekDistance.getProgress()
+                Math.round(seekQuiet.getValue()),
+                Math.round(seekWifi.getValue()),
+                Math.round(seekBudget.getValue()),
+                Math.round(seekDistance.getValue())
         );
         prefsManager.saveWeights(weights);
 
-        Toast.makeText(requireContext(), "Profile and preferences saved!", Toast.LENGTH_SHORT).show();
+        showMessage("Changes saved");
+    }
+
+    private void showMessage(String message) {
+        View root = getView();
+        if (root == null) return;
+        Snackbar bar = Snackbar.make(root, message, Snackbar.LENGTH_SHORT);
+        View nav = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (nav != null) bar.setAnchorView(nav);
+        bar.show();
     }
 }

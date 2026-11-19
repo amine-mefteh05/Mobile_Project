@@ -80,6 +80,16 @@ public class TaskController {
         }
     }
 
+    /** Re-opens a completed task (used when the student unticks it). */
+    public boolean markTaskPending(long taskId) {
+        try {
+            return taskRepo.markStatus(taskId, Task.Status.PENDING);
+        } catch (Exception e) {
+            Log.e(TAG, "Error re-opening task: " + e.getMessage(), e);
+            return false;
+        }
+    }
+
     public boolean deleteTask(long taskId) {
         try {
             ReminderScheduler.cancelReminder(context, taskId);

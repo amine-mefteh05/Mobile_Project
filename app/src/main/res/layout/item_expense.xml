@@ -1,79 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Ledger row: category glyph, what, when, amount. Flat, divider-separated. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <ImageView
+        android:id="@+id/iconExpenseCategory"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_circle"
+        android:importantForAccessibility="no"
+        android:padding="9dp"
+        tools:src="@drawable/ic_food" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textExpenseDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expense Description"
-                android:textColor="@color/dark_text"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipExpenseCategory"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="FOOD"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/textExpenseDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="2025-05-01"
-                    android:textColor="@color/gray_text"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </LinearLayout>
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textExpenseAmount"
+            android:id="@+id/textExpenseDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="15.50 TND"
-            android:textColor="@color/purple_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.UniMate.Body"
+            tools:text="Lunch at the campus café" />
 
-        <ImageButton
-            android:id="@+id/btnDeleteExpense"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Expense"
-            android:src="@drawable/ic_delete"
-            app:tint="@color/gray_text" />
-
+        <TextView
+            android:id="@+id/textExpenseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.UniMate.Label"
+            android:textColor="@color/text_tertiary"
+            tools:text="Food · Mon, 3 Nov" />
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textExpenseAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_s"
+        android:fontFeatureSettings="tnum"
+        android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+        tools:text="15.50 TND" />
+
+    <ImageButton
+        android:id="@+id/btnDeleteExpense"
+        android:layout_width="@dimen/touch_target"
+        android:layout_height="@dimen/touch_target"
+        android:layout_marginEnd="-12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete expense"
+        android:padding="13dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/text_tertiary" />
+</LinearLayout>

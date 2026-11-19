@@ -1,29 +1,22 @@
 package com.unimate.view;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.unimate.R;
 import com.unimate.controller.TaskController;
 import com.unimate.model.Task;
+import com.unimate.view.ui.UiKit;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.Locale;
 
 public class TaskFormActivity extends AppCompatActivity {
@@ -31,16 +24,17 @@ public class TaskFormActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_ID = "extra_task_id";
 
     private TextInputEditText editTitle, editDescription, editDeadline, editDuration, editReminderTime;
-    private TextInputLayout layoutReminderTime;
-    private Spinner spinnerCategory;
-    private RadioGroup radioGroupPriority;
-    private RadioButton radioLow, radioMedium, radioHigh;
-    private SwitchMaterial switchReminder;
-    private Button btnSaveTask;
+    private TextInputLayout layoutTitle, layoutDeadline, layoutDuration, layoutReminderTime;
+    private ChipGroup chipGroupCategory;
+    private MaterialButtonToggleGroup togglePriority;
+    private MaterialSwitch switchReminder;
+    private View btnSaveTask;
 
     private TaskController taskController;
     private long taskId = -1;
     private Task currentTask;
+    /** ISO yyyy-MM-dd; the field itself shows a friendly date. */
+    private String deadlineIso = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +42,19 @@ public class TaskFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_form);
 
         taskController = new TaskController(this);
+        taskId = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
 
-        Toolbar toolbar = findViewById(R.id.toolbarTaskForm);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        UiKit.setupSecondaryScreen(this, R.id.toolbarTaskForm,
+                taskId > 0 ? "Edit task" : "New task", R.drawable.ic_close, "Close");
+        UiKit.padForSystemBars(findViewById(R.id.bottomBarTaskForm), false, true);
 
         initViews();
-        setupSpinner();
 
-        taskId = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
         if (taskId > 0) {
-            setTitle("Edit Task");
             loadTaskData();
         } else {
-            setTitle("Create New Task");
             currentTask = new Task();
+            editDuration.setText("60");
         }
 
         setupListeners();
@@ -76,58 +66,58 @@ public class TaskFormActivity extends AppCompatActivity {
         editDeadline = findViewById(R.id.editTaskDeadline);
         editDuration = findViewById(R.id.editTaskDuration);
         editReminderTime = findViewById(R.id.editReminderTime);
+        layoutTitle = findViewById(R.id.layoutTaskTitle);
+        layoutDeadline = findViewById(R.id.layoutTaskDeadline);
+        layoutDuration = findViewById(R.id.layoutTaskDuration);
         layoutReminderTime = findViewById(R.id.layoutReminderTime);
-        spinnerCategory = findViewById(R.id.spinnerTaskCategory);
-        radioGroupPriority = findViewById(R.id.radioGroupPriority);
-        radioLow = findViewById(R.id.radioLow);
-        radioMedium = findViewById(R.id.radioMedium);
-        radioHigh = findViewById(R.id.radioHigh);
+        chipGroupCategory = findViewById(R.id.chipGroupTaskCategory);
+        togglePriority = findViewById(R.id.togglePriority);
         switchReminder = findViewById(R.id.switchReminder);
         btnSaveTask = findViewById(R.id.btnSaveTask);
     }
 
-    private void setupSpinner() {
-        String[] categories = {"UNIVERSITY", "PERSONAL", "PROJECT", "EXAM"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
+    private void setupListeners() {
+        editDeadline.setOnClickListener(v -> UiKit.pickDate(this, "Deadline", deadlineIso, this::setDeadline));
+        editReminderTime.setOnClickListener(v -> UiKit.pickTime(this, "Reminder time",
+                textOf(editReminderTime), editReminderTime::setText));
+
+        switchReminder.setOnCheckedChangeListener((buttonView, isChecked) ->
+                layoutReminderTime.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+
+        UiKit.clearErrorOnEdit(layoutTitle, layoutDuration);
+        btnSaveTask.setOnClickListener(v -> saveTask());
     }
 
-    private void setupListeners() {
-        editDeadline.setOnClickListener(v -> showDatePicker());
-        editReminderTime.setOnClickListener(v -> showTimePicker());
-
-        switchReminder.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            layoutReminderTime.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-        });
-
-        btnSaveTask.setOnClickListener(v -> saveTask());
+    private void setDeadline(String iso) {
+        deadlineIso = iso == null ? "" : iso;
+        editDeadline.setText(deadlineIso.isEmpty() ? "" : UiKit.prettyDate(deadlineIso));
+        layoutDeadline.setError(null);
+        layoutDeadline.setHelperText(deadlineIso.isEmpty() ? null : UiKit.relativeDue(deadlineIso));
     }
 
     private void loadTaskData() {
         currentTask = taskController.getTaskById(taskId);
         if (currentTask == null) {
-            Toast.makeText(this, "Task not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "This task no longer exists", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
         editTitle.setText(currentTask.getTitle());
         editDescription.setText(currentTask.getDescription());
-        editDeadline.setText(currentTask.getDeadline());
+        setDeadline(currentTask.getDeadline());
         editDuration.setText(String.valueOf(currentTask.getDuration()));
 
         if (currentTask.getCategory() != null) {
-            int pos = ((ArrayAdapter<String>) spinnerCategory.getAdapter()).getPosition(currentTask.getCategory().name());
-            if (pos >= 0) spinnerCategory.setSelection(pos);
+            checkChipWithTag(currentTask.getCategory().name());
         }
 
         if (currentTask.getPriority() == Task.Priority.HIGH) {
-            radioHigh.setChecked(true);
+            togglePriority.check(R.id.radioHigh);
         } else if (currentTask.getPriority() == Task.Priority.LOW) {
-            radioLow.setChecked(true);
+            togglePriority.check(R.id.radioLow);
         } else {
-            radioMedium.setChecked(true);
+            togglePriority.check(R.id.radioMedium);
         }
 
         switchReminder.setChecked(currentTask.isHasReminder());
@@ -135,50 +125,62 @@ public class TaskFormActivity extends AppCompatActivity {
         editReminderTime.setText(currentTask.getReminderTime() != null ? currentTask.getReminderTime() : "09:00");
     }
 
-    private void showDatePicker() {
-        Calendar cal = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            String selectedDate = String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-            editDeadline.setText(selectedDate);
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        dialog.show();
+    private void checkChipWithTag(String tag) {
+        for (int i = 0; i < chipGroupCategory.getChildCount(); i++) {
+            View child = chipGroupCategory.getChildAt(i);
+            if (child instanceof Chip && tag.equals(child.getTag())) {
+                chipGroupCategory.check(child.getId());
+                return;
+            }
+        }
     }
 
-    private void showTimePicker() {
-        Calendar cal = Calendar.getInstance();
-        TimePickerDialog dialog = new TimePickerDialog(this, (view, hourOfDay, minute) -> {
-            String selectedTime = String.format(Locale.US, "%02d:%02d", hourOfDay, minute);
-            editReminderTime.setText(selectedTime);
-        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
-        dialog.show();
+    private static String textOf(TextInputEditText edit) {
+        return edit.getText() != null ? edit.getText().toString() : "";
     }
 
     private void saveTask() {
-        String title = editTitle.getText() != null ? editTitle.getText().toString() : "";
-        String description = editDescription.getText() != null ? editDescription.getText().toString() : "";
-        String deadline = editDeadline.getText() != null ? editDeadline.getText().toString() : "";
-        String durationStr = editDuration.getText() != null ? editDuration.getText().toString() : "";
-        String reminderTime = editReminderTime.getText() != null ? editReminderTime.getText().toString() : "09:00";
+        String title = textOf(editTitle);
+        String description = textOf(editDescription);
+        String durationStr = textOf(editDuration);
+        String reminderTime = textOf(editReminderTime);
+        if (reminderTime.trim().isEmpty()) reminderTime = "09:00";
 
-        // Validate via Controller
-        String error = taskController.validateTaskInput(title, deadline, durationStr);
+        layoutTitle.setError(null);
+        layoutDeadline.setError(null);
+        layoutDuration.setError(null);
+
+        // Validate via controller, then attach the message to the field it concerns.
+        String error = taskController.validateTaskInput(title, deadlineIso, durationStr);
         if (error != null) {
-            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            String lower = error.toLowerCase(Locale.ROOT);
+            if (lower.contains("title")) {
+                layoutTitle.setError(error);
+                editTitle.requestFocus();
+            } else if (lower.contains("deadline") || lower.contains("date")) {
+                layoutDeadline.setError(error);
+            } else {
+                layoutDuration.setError(error);
+                editDuration.requestFocus();
+            }
             return;
         }
 
         if (currentTask == null) currentTask = new Task();
         currentTask.setTitle(title.trim());
         currentTask.setDescription(description.trim());
-        currentTask.setDeadline(deadline.trim());
+        currentTask.setDeadline(deadlineIso.trim());
         currentTask.setDuration(Integer.parseInt(durationStr.trim()));
 
-        String selectedCat = (String) spinnerCategory.getSelectedItem();
-        try { currentTask.setCategory(Task.Category.valueOf(selectedCat)); } catch (Exception ignored) {}
+        Chip checked = chipGroupCategory.findViewById(chipGroupCategory.getCheckedChipId());
+        if (checked != null && checked.getTag() != null) {
+            try { currentTask.setCategory(Task.Category.valueOf(checked.getTag().toString())); } catch (Exception ignored) {}
+        }
 
-        if (radioHigh.isChecked()) {
+        int priorityId = togglePriority.getCheckedButtonId();
+        if (priorityId == R.id.radioHigh) {
             currentTask.setPriority(Task.Priority.HIGH);
-        } else if (radioLow.isChecked()) {
+        } else if (priorityId == R.id.radioLow) {
             currentTask.setPriority(Task.Priority.LOW);
         } else {
             currentTask.setPriority(Task.Priority.MEDIUM);
@@ -189,11 +191,11 @@ public class TaskFormActivity extends AppCompatActivity {
 
         boolean success = taskController.saveTask(currentTask);
         if (success) {
-            Toast.makeText(this, "Task saved successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, taskId > 0 ? "Task updated" : "Task added", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish();
         } else {
-            Toast.makeText(this, "Failed to save task", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Couldn't save the task. Try again.", Toast.LENGTH_SHORT).show();
         }
     }
 

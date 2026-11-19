@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="@color/bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,160 +14,220 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarBudget"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/purple_primary"
-            app:titleTextColor="@color/white" />
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize" />
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollBudget"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/fab_clearance">
 
-            <!-- Budget Overview Card -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/gutter"
+                android:paddingTop="4dp">
 
+                <!-- Overview: the number is the hero; no container -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Weekly Spending Overview (Mon - Sun)"
-                        android:textColor="@color/purple_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="12dp">
 
-                        <TextView
-                            android:id="@+id/textBudgetLimit"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Limit: 100.00 TND"
-                            android:textColor="@color/dark_text"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Spent this week"
+                                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnEditBudgetLimit"
+                                style="@style/Widget.UniMate.Button.Link"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="Edit weekly limit"
+                                android:text="Edit limit" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/textBudgetSpent"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Spent: 0.00 TND"
-                            android:textColor="@color/gray_text" />
+                            android:layout_marginTop="6dp"
+                            android:fontFeatureSettings="tnum"
+                            android:textAppearance="@style/TextAppearance.UniMate.Display"
+                            android:textSize="40sp"
+                            tools:text="42.50 TND" />
+
+                        <TextView
+                            android:id="@+id/textBudgetLimit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFeatureSettings="tnum"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption"
+                            tools:text="of 100.00 TND · resets Monday" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progressBudget"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:max="100"
+                            app:trackThickness="8dp" />
 
                         <TextView
                             android:id="@+id/textBudgetRemaining"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:fontFeatureSettings="tnum"
+                            android:textAppearance="@style/TextAppearance.UniMate.Label"
+                            tools:text="57.50 TND left" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Warning (≥ 80 %) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBudgetWarning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/warning_soft"
+                    app:strokeWidth="0dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_m"
+                            android:layout_height="@dimen/icon_m"
+                            android:layout_marginTop="1dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_warning"
+                            app:tint="@color/warning" />
+
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
                             android:layout_weight="1"
-                            android:text="Remaining: 100.00 TND"
-                            android:textColor="@color/success_green"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textBudgetWarningTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Budget is getting tight"
+                                android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                                android:textColor="@color/warning" />
+
+                            <TextView
+                                android:id="@+id/textBudgetWarningBody"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="You've used 80% or more of this week's limit. Free study spots will rank higher."
+                                android:textAppearance="@style/TextAppearance.UniMate.Caption"
+                                android:textColor="@color/text_primary" />
+                        </LinearLayout>
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <ProgressBar
-                        android:id="@+id/progressBudget"
-                        style="?android:attr/progressBarStyleHorizontal"
+                <!-- Breakdown -->
+                <LinearLayout
+                    android:id="@+id/sectionBreakdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:accessibilityHeading="true"
+                        android:text="By category"
+                        android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutCategoryBreakdown"
                         android:layout_width="match_parent"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="12dp"
-                        android:max="100"
-                        android:progress="0"
-                        android:progressDrawable="@drawable/progress_budget" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Warning Card when >= 80% -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardBudgetWarning"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/warning_container"
-                app:cardCornerRadius="12dp"
-                app:strokeColor="@color/warning_orange"
-                app:strokeWidth="1dp">
-
+                <!-- Expenses -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_warning"
-                        app:tint="@color/warning_orange" />
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
-                        android:text="⚠️ Budget Alert: You have reached 80% of your weekly spending limit!"
-                        android:textColor="@color/dark_text"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:accessibilityHeading="true"
+                        android:text="Expenses"
+                        android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+                    <TextView
+                        android:id="@+id/textExpenseCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.UniMate.Caption"
+                        tools:text="4 this week" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Expense List Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="This Week's Expenses"
-                android:textColor="@color/dark_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <include
+                    android:id="@+id/emptyExpenses"
+                    layout="@layout/view_empty_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/textEmptyExpenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp"
-                android:text="No expenses recorded for this week."
-                android:textColor="@color/gray_text"
-                android:textSize="14sp"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewExpenses"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewExpenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabAddExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="Add Expense"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/purple_primary"
-        app:tint="@color/white" />
+        android:layout_margin="@dimen/gutter"
+        android:contentDescription="Add expense"
+        android:text="Expense"
+        app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,147 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarOppDetails"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageButton
+            android:id="@+id/btnOppDetailsFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Save to favorites"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_star_outline"
+            app:tint="@color/text_secondary" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <!-- Title & Favorite Card -->
+            <TextView
+                android:id="@+id/textOppDetailsCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.06"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                tools:text="Hackathon" />
+
+            <TextView
+                android:id="@+id/textOppDetailsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:accessibilityHeading="true"
+                android:textAppearance="@style/TextAppearance.UniMate.Display"
+                android:textSize="26sp"
+                tools:text="Google Developer Hackathon 2026" />
+
+            <TextView
+                android:id="@+id/textOppDetailsOrg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.UniMate.BodySecondary"
+                tools:text="GDG Tunis" />
+
+            <!-- Key facts -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                android:layout_marginTop="@dimen/space_xl">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/card_padding">
 
-                        <TextView
-                            android:id="@+id/textOppDetailsTitle"
+                        <ImageView
+                            android:id="@+id/iconOppDeadline"
+                            android:layout_width="@dimen/icon_tile"
+                            android:layout_height="@dimen/icon_tile"
+                            android:background="@drawable/bg_icon_tile"
+                            android:importantForAccessibility="no"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_flag"
+                            app:tint="@color/brand" />
+
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
                             android:layout_weight="1"
-                            android:text="Opportunity Title"
-                            android:textColor="@color/dark_text"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
 
-                        <ImageButton
-                            android:id="@+id/btnOppDetailsFavorite"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="Favorite Opportunity"
-                            android:src="@drawable/ic_star_outline" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Deadline"
+                                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                            <TextView
+                                android:id="@+id/textOppDetailsDeadline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                                tools:text="Fri, 5 Dec 2026" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textOppDetailsClosing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:background="@drawable/bg_tag"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
+                            android:textAppearance="@style/TextAppearance.UniMate.Label"
+                            android:textSize="11sp"
+                            tools:text="Closes in 16 days" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textOppDetailsOrg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Organization Name"
-                        android:textColor="@color/gray_text"
-                        android:textSize="14sp" />
+                    <View
+                        android:id="@+id/dividerOppLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="68dp"
+                        android:background="@color/stroke" />
 
-                    <TextView
-                        android:id="@+id/textOppDetailsDeadline"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/rowOppLink"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="Deadline: 2025-06-30"
-                        android:textColor="@color/danger_red"
-                        android:textStyle="bold" />
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/card_padding">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipOppDetailsCategory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="WORKSHOP" />
+                        <ImageView
+                            android:layout_width="@dimen/icon_tile"
+                            android:layout_height="@dimen/icon_tile"
+                            android:background="@drawable/bg_icon_tile"
+                            android:importantForAccessibility="no"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_open_in_new"
+                            app:tint="@color/brand" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Website"
+                                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                            <TextView
+                                android:id="@+id/textOppDetailsLink"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                                tools:text="gdg.community.dev" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_m"
+                            android:layout_height="@dimen/icon_m"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_tertiary" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Description Card -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- About -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:accessibilityHeading="true"
+                android:text="About"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <TextView
+                android:id="@+id/textOppDetailsDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Opportunity Details"
-                        android:textColor="@color/purple_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textOppDetailsDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Full description..."
-                        android:textColor="@color/dark_text"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Action Buttons -->
-            <Button
-                android:id="@+id/btnAddDeadlineAsTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/purple_primary"
-                android:text="➕ Add Application Deadline as Task"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btnOpenOppLink"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Open Official Link / Application Page" />
-
+                android:layout_marginTop="@dimen/space_s"
+                android:lineSpacingMultiplier="1.25"
+                android:textAppearance="@style/TextAppearance.UniMate.Body"
+                android:textIsSelectable="true"
+                tools:text="A 48-hour hackathon for students building with Google technologies." />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/bottomBarOppDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/stroke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingVertical="@dimen/space_m">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddDeadlineAsTask"
+                style="@style/Widget.UniMate.Button.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add to tasks"
+                app:icon="@drawable/ic_tasks" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenOppLink"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:layout_weight="1"
+                android:text="Apply"
+                app:icon="@drawable/ic_open_in_new"
+                app:iconGravity="textEnd" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

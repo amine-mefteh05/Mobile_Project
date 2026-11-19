@@ -1,41 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarSpotDetails"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageButton
+            android:id="@+id/btnDetailsFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Save to favorites"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_star_outline"
+            app:tint="@color/text_secondary" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <!-- Title & Favorite Card -->
-            <com.google.android.material.card.MaterialCardView
+            <TextView
+                android:id="@+id/textDetailsCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.06"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                tools:text="Library" />
+
+            <TextView
+                android:id="@+id/textDetailsName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                android:layout_marginTop="@dimen/space_m"
+                android:accessibilityHeading="true"
+                android:textAppearance="@style/TextAppearance.UniMate.Display"
+                android:textSize="26sp"
+                tools:text="Central University Library" />
+
+            <TextView
+                android:id="@+id/textDetailsAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.UniMate.BodySecondary"
+                tools:text="Campus Universitaire, Tunis" />
+
+            <!-- Personal match -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDetailsMatch"
+                style="@style/Widget.UniMate.Card.Assistant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/card_padding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -43,131 +90,240 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="@dimen/icon_s"
+                            android:layout_height="@dimen/icon_s"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_sparkle"
+                            app:tint="@color/brand" />
+
                         <TextView
-                            android:id="@+id/textDetailsName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:layout_weight="1"
-                            android:text="Place Name"
-                            android:textColor="@color/dark_text"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:text="Match for you"
+                            android:textAppearance="@style/TextAppearance.UniMate.Overline"
+                            android:textColor="@color/brand" />
 
-                        <ImageButton
-                            android:id="@+id/btnDetailsFavorite"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="Favorite Place"
-                            android:src="@drawable/ic_star_outline" />
+                        <TextView
+                            android:id="@+id/textDetailsScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFeatureSettings="tnum"
+                            android:textAppearance="@style/TextAppearance.UniMate.Metric"
+                            tools:text="82" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/100"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textDetailsAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Address"
-                        android:textColor="@color/gray_text"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressDetailsScore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="@dimen/space_m"
+                        android:max="100"
+                        app:trackColor="@color/ai_stroke"
+                        app:trackThickness="6dp" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipDetailsCategory"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Library" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipDetailsWifi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Wi-Fi" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipDetailsOutlets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Outlets" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/textDetailsMatchCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="Weighted by the preferences you set in Profile."
+                        android:textAppearance="@style/TextAppearance.UniMate.Caption" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Specifications Card -->
+            <!-- Facts -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                android:layout_marginTop="@dimen/space_s">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Hours -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Place Characteristics"
-                        android:textColor="@color/purple_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/card_padding">
 
-                    <TextView
-                        android:id="@+id/textDetailsHours"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Opening Hours: 08:00 - 20:00"
-                        android:textColor="@color/dark_text" />
+                        <ImageView
+                            android:layout_width="@dimen/icon_m"
+                            android:layout_height="@dimen/icon_m"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/text_secondary" />
 
-                    <TextView
-                        android:id="@+id/textDetailsPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="Price Level: Free / Low"
-                        android:textColor="@color/dark_text" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
+                            android:layout_weight="1"
+                            android:text="Opening hours"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body" />
 
-                    <TextView
-                        android:id="@+id/textDetailsNoise"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textDetailsHours"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFeatureSettings="tnum"
+                            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                            tools:text="08:00 – 20:00" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Price -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="Noise Level: Very Quiet"
-                        android:textColor="@color/dark_text" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_m"
+                            android:layout_height="@dimen/icon_m"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_budget"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
+                            android:layout_weight="1"
+                            android:text="Price"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body" />
+
+                        <TextView
+                            android:id="@+id/textDetailsPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                            tools:text="Free" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Noise -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/card_padding">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_m"
+                            android:layout_height="@dimen/icon_m"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_volume"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
+                            android:layout_weight="1"
+                            android:text="Noise"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body" />
+
+                        <TextView
+                            android:id="@+id/textDetailsNoise"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                            tools:text="Quiet · 2/5" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Action Buttons -->
-            <Button
-                android:id="@+id/btnOpenMaps"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+            <!-- Amenities -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:accessibilityHeading="true"
+                android:text="Amenities"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Open Location in Maps (Geo Intent)" />
+                android:layout_marginTop="@dimen/space_s"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnCompareSpot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/purple_primary"
-                android:text="Compare with Another Spot"
-                android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/textDetailsWifi"
+                    style="@style/UniMate.Amenity"
+                    tools:text="Wi-Fi" />
 
+                <TextView
+                    android:id="@+id/textDetailsOutlets"
+                    style="@style/UniMate.Amenity"
+                    android:layout_marginStart="@dimen/space_s"
+                    tools:text="Power outlets" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/bottomBarSpotDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/stroke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingVertical="@dimen/space_m">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCompareSpot"
+                style="@style/Widget.UniMate.Button.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Compare"
+                app:icon="@drawable/ic_compare" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenMaps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:layout_weight="1"
+                android:text="Directions"
+                app:icon="@drawable/ic_map" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

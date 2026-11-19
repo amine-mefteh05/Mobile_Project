@@ -1,22 +1,387 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============================================================
+         UniMate theme. Light/dark come from the color tokens
+         (values/colors.xml and values-night/colors.xml).
+         ============================================================ -->
     <style name="Base.Theme.UniMate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color -->
-        <item name="colorPrimary">@color/purple_primary</item>
-        <item name="colorPrimaryVariant">@color/purple_primary_variant</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <!-- Color roles -->
+        <item name="colorPrimary">@color/brand_mid</item>
+        <item name="colorOnPrimary">@color/on_brand</item>
+        <item name="colorPrimaryContainer">@color/brand_soft</item>
+        <item name="colorOnPrimaryContainer">@color/on_brand_soft</item>
+        <item name="colorSecondary">@color/brand_mid</item>
+        <item name="colorOnSecondary">@color/on_brand</item>
+        <item name="colorSecondaryContainer">@color/brand_soft</item>
+        <item name="colorOnSecondaryContainer">@color/on_brand_soft</item>
+        <item name="colorTertiary">@color/brand_mid</item>
+        <item name="colorError">@color/danger</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/surface_muted</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/stroke_strong</item>
+        <item name="colorOutlineVariant">@color/stroke</item>
+        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLow">@color/surface</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_muted</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_tertiary</item>
 
-        <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/purple_secondary</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <!-- Window: edge-to-edge, bars drawn by the app (see UiKit.applyEdgeToEdge) -->
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
 
-        <!-- Status bar color -->
-        <item name="android:statusBarColor">@color/purple_primary_variant</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <!-- Flat design: surfaces separate by stroke, not by brand-tinted tonal elevation -->
+        <item name="elevationOverlayEnabled">false</item>
 
-        <!-- Background color -->
-        <item name="android:windowBackground">@color/light_gray</item>
+        <!-- Shapes -->
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.UniMate.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.UniMate.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.UniMate.Large</item>
+
+        <!-- Component defaults -->
+        <item name="materialButtonStyle">@style/Widget.UniMate.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.UniMate.Button.Outlined</item>
+        <item name="borderlessButtonStyle">@style/Widget.UniMate.Button.Text</item>
+        <item name="materialCardViewStyle">@style/Widget.UniMate.Card</item>
+        <item name="textInputStyle">@style/Widget.UniMate.TextInput</item>
+        <item name="chipStyle">@style/Widget.UniMate.Chip</item>
+        <item name="toolbarStyle">@style/Widget.UniMate.Toolbar</item>
+        <item name="bottomNavigationStyle">@style/Widget.UniMate.BottomNav</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.UniMate.ExtendedFab</item>
+        <item name="linearProgressIndicatorStyle">@style/Widget.UniMate.Progress</item>
+        <item name="sliderStyle">@style/Widget.UniMate.Slider</item>
+        <item name="materialSwitchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.UniMate.BottomSheet</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.UniMate.Dialog</item>
     </style>
 
     <style name="Theme.UniMate" parent="Base.Theme.UniMate" />
+
+    <!-- ============================== Shapes ============================== -->
+    <style name="ShapeAppearance.UniMate.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">6dp</item>
+    </style>
+    <style name="ShapeAppearance.UniMate.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="ShapeAppearance.UniMate.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerSize">14dp</item>
+    </style>
+    <style name="ShapeAppearance.UniMate.Button" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+    <style name="ShapeAppearance.UniMate.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- ============================ Typography ============================ -->
+    <!-- Display + metrics use a serif: the one editorial voice in an otherwise quiet sans UI. -->
+    <style name="TextAppearance.UniMate.Display" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="fontFamily">serif</item>
+        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Headline" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Subtitle" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.BodySecondary" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Overline" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_tertiary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Metric" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="fontFamily">serif</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.UniMate.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- ============================ Components ============================ -->
+    <style name="Widget.UniMate.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="backgroundTint">@color/button_fill</item>
+        <item name="android:textColor">@color/button_text</item>
+        <item name="iconTint">@color/button_text</item>
+        <item name="rippleColor">@color/brand_pressed</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Button</item>
+    </style>
+    <style name="Widget.UniMate.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/brand_soft</item>
+        <item name="android:textColor">@color/on_brand_soft</item>
+        <item name="iconTint">@color/on_brand_soft</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Button</item>
+    </style>
+    <style name="Widget.UniMate.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeColor">@color/stroke_strong</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="rippleColor">@color/surface_muted</item>
+        <item name="iconTint">@color/text_primary</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Button</item>
+    </style>
+    <style name="Widget.UniMate.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/brand</item>
+        <item name="iconTint">@color/brand</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Label</item>
+        <item name="android:textSize">14sp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Button</item>
+    </style>
+    <!-- Compact text button used next to section titles ("See all") -->
+    <style name="Widget.UniMate.Button.Link" parent="Widget.UniMate.Button.Text">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    <!-- Segmented control item (inside MaterialButtonToggleGroup) -->
+    <style name="Widget.UniMate.Segment" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="backgroundTint">@color/segment_bg</item>
+        <item name="android:textColor">@color/segment_text</item>
+        <item name="strokeColor">@color/stroke</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Label</item>
+        <item name="android:textSize">13sp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Medium</item>
+    </style>
+
+    <style name="Widget.UniMate.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="strokeColor">@color/stroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+    <!-- Card used for assistant / AI moments -->
+    <style name="Widget.UniMate.Card.Assistant" parent="Widget.UniMate.Card">
+        <item name="cardBackgroundColor">@color/ai_surface</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.UniMate.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxStrokeColor">@color/brand</item>
+        <item name="startIconTint">@color/text_tertiary</item>
+        <item name="endIconTint">@color/text_tertiary</item>
+        <item name="hintTextColor">@color/brand</item>
+    </style>
+    <style name="Widget.UniMate.TextInput.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxStrokeColor">@color/brand</item>
+        <item name="startIconTint">@color/text_tertiary</item>
+        <item name="endIconTint">@color/text_tertiary</item>
+        <item name="hintTextColor">@color/brand</item>
+    </style>
+
+    <!-- Form title: typed straight onto the page like a document heading, no box. -->
+    <style name="Widget.UniMate.TextInput.Headline" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundMode">none</item>
+        <item name="hintEnabled">false</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <!-- Search: a quiet filled field, no outline, so it doesn't compete with content. -->
+    <style name="Widget.UniMate.TextInput.Search" parent="Widget.Material3.TextInputLayout.FilledBox.Dense">
+        <item name="boxBackgroundColor">@color/surface_muted</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="startIconTint">@color/text_tertiary</item>
+        <item name="endIconTint">@color/text_tertiary</item>
+    </style>
+
+    <style name="Widget.UniMate.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Label</item>
+        <item name="android:textSize">13sp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipMinHeight">34dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Medium</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <style name="Widget.UniMate.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/bg</item>
+        <item name="titleTextAppearance">@style/TextAppearance.UniMate.Headline</item>
+        <item name="titleTextColor">@color/text_primary</item>
+        <item name="navigationIconTint">@color/text_primary</item>
+        <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="titleCentered">false</item>
+    </style>
+
+    <style name="Widget.UniMate.BottomNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="elevation">0dp</item>
+        <item name="itemIconTint">@color/nav_item</item>
+        <item name="itemTextColor">@color/nav_item</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.UniMate.Label</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.UniMate.Label</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.UniMate.BottomNav.Indicator</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+    <style name="Widget.UniMate.BottomNav.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/accent</item>
+    </style>
+
+    <style name="Widget.UniMate.ExtendedFab" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="backgroundTint">@color/brand_fill</item>
+        <item name="android:textColor">@color/on_brand</item>
+        <item name="iconTint">@color/on_brand</item>
+        <item name="rippleColor">@color/brand_pressed</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Button</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.UniMate.Large</item>
+        <item name="elevation">2dp</item>
+    </style>
+
+    <style name="Widget.UniMate.Slider" parent="Widget.Material3.Slider">
+        <item name="trackHeight">6dp</item>
+        <item name="trackColorActive">@color/brand_mid</item>
+        <item name="trackColorInactive">@color/surface_muted</item>
+        <item name="thumbColor">@color/brand_mid</item>
+        <item name="tickVisible">false</item>
+        <item name="labelBehavior">gone</item>
+    </style>
+
+    <style name="Widget.UniMate.Progress" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="trackThickness">8dp</item>
+        <item name="trackCornerRadius">4dp</item>
+        <item name="indicatorColor">@color/brand_mid</item>
+        <item name="trackColor">@color/surface_muted</item>
+        <item name="trackStopIndicatorSize">0dp</item>
+        <item name="indicatorTrackGapSize">0dp</item>
+    </style>
+
+    <!-- Small amenity / attribute pill (icon set from code via UiKit.setLeadingIcon) -->
+    <style name="UniMate.Amenity" parent="">
+        <!-- Inline attribute: icon + word, no container. Icon set in code via UiKit.setLeadingIcon. -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.UniMate.Label</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="ThemeOverlay.UniMate.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.UniMate.BottomSheet</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="enableEdgeToEdge">true</item>
+    </style>
+    <style name="Widget.UniMate.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.UniMate.Sheet</item>
+    </style>
+    <style name="ThemeOverlay.UniMate.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurfaceContainerHigh">@color/surface</item>
+    </style>
 </resources>

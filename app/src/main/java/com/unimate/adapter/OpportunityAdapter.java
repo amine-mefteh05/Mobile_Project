@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
 import com.unimate.R;
 import com.unimate.model.Opportunity;
+import com.unimate.view.ui.UiKit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public OpportunityAdapter(Context context, List<Opportunity> opportunities, List<Long> favoriteIds, OnOppActionListener listener) {
         this.context = context;
         this.opportunities = opportunities != null ? opportunities : new ArrayList<>();
-        this.favoriteIds = favoriteIds != null ? favoriteIds : new ArrayList<>();
+        this.favoriteIds = favoriteIds != null ? new ArrayList<>(favoriteIds) : new ArrayList<>();
         this.listener = listener;
     }
 
@@ -54,8 +54,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull OppViewHolder holder, int position) {
-        Opportunity opp = opportunities.get(position);
-        holder.bind(opp);
+        holder.bind(opportunities.get(position));
     }
 
     @Override
@@ -65,35 +64,53 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     class OppViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textTitle;
-        TextView textOrg;
-        TextView textDeadline;
-        Chip chipCategory;
-        ImageButton btnFavorite;
+        final TextView textTitle, textOrg, textDeadline, textCategory, textDay, textMonth;
+        final ImageButton btnFavorite;
 
-        public OppViewHolder(@NonNull View itemView) {
+        OppViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textOppTitle);
             textOrg = itemView.findViewById(R.id.textOppOrg);
             textDeadline = itemView.findViewById(R.id.textOppDeadline);
-            chipCategory = itemView.findViewById(R.id.chipOppCategory);
+            textCategory = itemView.findViewById(R.id.textOppCategory);
+            textDay = itemView.findViewById(R.id.textOppDay);
+            textMonth = itemView.findViewById(R.id.textOppMonth);
             btnFavorite = itemView.findViewById(R.id.btnFavOpp);
         }
 
-        public void bind(Opportunity opp) {
+        void bind(Opportunity opp) {
             textTitle.setText(opp.getTitle());
-            textOrg.setText(opp.getOrganization() != null ? opp.getOrganization() : "University Opportunity");
-            textDeadline.setText("Deadline: " + (opp.getDeadline() != null ? opp.getDeadline() : "Open"));
+            textOrg.setText(opp.getOrganization() != null ? opp.getOrganization() : "University opportunity");
 
-            chipCategory.setText(opp.getCategory() != null ? opp.getCategory().name() : "EVENT");
+            // Category is a coloured small-caps word, not a pill.
+            textCategory.setText(opp.getCategory() != null ? UiKit.label(opp.getCategory()) : "Event");
+            textCategory.setTextColor(UiKit.color(context, UiKit.opportunityColor(opp.getCategory())));
+
+            // Date column: day + month of the deadline, or an em dash for rolling ones.
+            java.time.LocalDate deadline = null;
+            try {
+                if (opp.getDeadline() != null) deadline = java.time.LocalDate.parse(opp.getDeadline().trim());
+            } catch (Exception ignored) { }
+            textDay.setText(deadline != null ? String.valueOf(deadline.getDayOfMonth()) : "—");
+            textMonth.setText(deadline != null
+                    ? deadline.format(java.time.format.DateTimeFormatter.ofPattern("MMM", java.util.Locale.getDefault()))
+                    : "Open");
+
+            // Urgency is communicated by color: <7 days is a warning, closed is muted.
+            long days = UiKit.daysUntil(opp.getDeadline());
+            int tone = days < 0 ? R.color.text_tertiary : days < 7 ? R.color.warning : R.color.text_secondary;
+            textDeadline.setText(UiKit.relativeClosing(opp.getDeadline()));
+            textDeadline.setTextColor(UiKit.color(context, tone));
+            UiKit.setLeadingIcon(textDeadline, R.drawable.ic_flag, tone, 14);
 
             boolean isFav = favoriteIds.contains(opp.getId());
             btnFavorite.setImageResource(isFav ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
+            btnFavorite.setImageTintList(isFav ? null : UiKit.colorList(context, R.color.text_tertiary));
+            btnFavorite.setContentDescription(isFav ? "Remove " + opp.getTitle() + " from saved" : "Save " + opp.getTitle());
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) listener.onOppClick(opp);
             });
-
             btnFavorite.setOnClickListener(v -> {
                 if (listener != null) listener.onOppFavoriteToggle(opp);
             });

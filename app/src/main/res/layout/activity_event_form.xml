@@ -1,142 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarEventForm"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <!-- Title Input -->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/layoutEventTitle"
+                style="@style/Widget.UniMate.TextInput.Headline"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Event Title *">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editEventTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences" />
+                    android:background="@null"
+                    android:fontFamily="serif"
+                    android:hint="Event name"
+                    android:paddingHorizontal="0dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="26sp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLines="2" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Date Input -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Type -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="Type"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupEventType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Date (YYYY-MM-DD) *">
+                android:layout_marginTop="@dimen/space_s"
+                app:checkedChip="@id/chipEventLecture"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEventLecture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="LECTURE"
+                    android:text="Lecture" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEventPractical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="PRACTICAL"
+                    android:text="Practical" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEventExam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="EXAM"
+                    android:text="Exam" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEventStudy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="STUDY"
+                    android:text="Study session" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEventPersonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="PERSONAL"
+                    android:text="Personal" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- When -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="When"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutEventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:hint="Date"
+                app:startIconDrawable="@drawable/ic_event">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editEventDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    tools:text="Wed, 19 Nov" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Start Time & End Time -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/space_m"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/layoutEventStart"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Start Time *">
+                    android:hint="Starts"
+                    app:startIconDrawable="@drawable/ic_clock">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editEventStartTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:cursorVisible="false"
                         android:focusable="false"
-                        android:inputType="none"
-                        android:text="09:00" />
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/layoutEventEnd"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="@dimen/space_m"
                     android:layout_weight="1"
-                    android:hint="End Time *">
+                    android:hint="Ends"
+                    app:startIconDrawable="@drawable/ic_clock">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editEventEndTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:cursorVisible="false"
                         android:focusable="false"
-                        android:inputType="none"
-                        android:text="10:30" />
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <!-- Location Input -->
+            <!-- Where -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="Where"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Location / Room">
+                android:layout_marginTop="@dimen/space_s"
+                android:hint="Location (optional)"
+                app:placeholderText="e.g. Amphi B, Room 204"
+                app:startIconDrawable="@drawable/ic_location">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editEventLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords" />
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Event Type Spinner -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Event Type"
-                android:textColor="@color/dark_text"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/spinnerEventType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@color/white"
-                android:padding="12dp" />
-
-            <!-- Save Event Button -->
-            <Button
-                android:id="@+id/btnSaveEvent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/purple_primary"
-                android:text="Save Event"
-                android:textColor="@color/white" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/bottomBarEventForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/stroke" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gutter"
+            android:layout_marginVertical="@dimen/space_m"
+            android:text="Save event" />
+    </LinearLayout>
 </LinearLayout>

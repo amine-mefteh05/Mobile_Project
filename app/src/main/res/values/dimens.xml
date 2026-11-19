@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spacing scale (4dp grid) and shared sizes. -->
+<resources>
+    <dimen name="gutter">20dp</dimen>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">12dp</dimen>
+    <dimen name="space_l">16dp</dimen>
+    <dimen name="space_xl">24dp</dimen>
+    <dimen name="space_xxl">32dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="icon_tile">40dp</dimen>
+    <dimen name="icon_s">16dp</dimen>
+    <dimen name="icon_m">20dp</dimen>
+    <dimen name="touch_target">44dp</dimen>
+    <dimen name="fab_clearance">96dp</dimen>
+</resources>

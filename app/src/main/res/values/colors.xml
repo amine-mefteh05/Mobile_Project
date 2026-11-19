@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    UniMate — "Sage" identity, light theme.
+
+    Three greens, each with one job:
+      brand_fill  #A8D5B5  the recognisable light green: primary buttons, FAB, selected states.
+                           Always carries dark text (on_brand), never white.
+      brand_mid            controls that need ≥3:1 against white: progress, switches, sliders.
+      brand                deep sage for text, links and icons (≥4.5:1 on bg).
+    Everything else is a warm, slightly green-tinted neutral scale so long sessions stay calm.
+    values-night/colors.xml redefines every token.
+-->
 <resources>
-    <!-- UniMate Theme Colors (Purple & White) -->
-    <color name="purple_500">#6750A4</color>
-    <color name="purple_700">#4A3780</color>
-    <color name="purple_200">#D0BCFF</color>
+    <!-- Brand -->
+    <color name="brand_fill">#A8D5B5</color>
+    <color name="on_brand">#173022</color>
+    <color name="brand_mid">#5E9673</color>
+    <color name="brand">#47765A</color>
+    <color name="brand_pressed">#2F5A3E</color>
+    <color name="brand_soft">#E4F2E8</color>
+    <color name="on_brand_soft">#2F5A3E</color>
+    <color name="accent">#C5E4CE</color>
 
-    <color name="purple_primary">#6750A4</color>
-    <color name="purple_primary_variant">#4A3780</color>
-    <color name="purple_secondary">#7D5260</color>
-    <color name="purple_container">#EADDFF</color>
-    <color name="on_purple_container">#21005D</color>
+    <!-- Assistant moments: a quieter tint of the brand, not a separate colour -->
+    <color name="ai_surface">#F1F7F2</color>
+    <color name="ai_stroke">#D3E7D9</color>
 
-    <!-- Base & Surface Colors -->
+    <!-- Neutrals -->
+    <color name="bg">#F8FAF7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_muted">#EFF5EF</color>
+    <color name="stroke">#E5EBE5</color>
+    <color name="stroke_strong">#D2DBD3</color>
+
+    <!-- Text (secondary darkened from #778278 to keep body copy ≥4.5:1) -->
+    <color name="text_primary">#202820</color>
+    <color name="text_secondary">#636E64</color>
+    <color name="text_tertiary">#8E998F</color>
+
+    <!-- Semantic -->
+    <color name="success">#3F7D52</color>
+    <color name="success_soft">#E6F2E9</color>
+    <color name="warning">#9C6114</color>
+    <color name="warning_soft">#F8F0E2</color>
+    <color name="danger">#B23A31</color>
+    <color name="danger_soft">#F9E9E7</color>
+
+    <!-- Category hues: muted, earthy, used only as small marks.
+         (Names kept for compatibility; values are no longer violet/blue/rose.) -->
+    <color name="hue_violet">#7E6A8C</color>  <!-- heather -->
+    <color name="hue_blue">#4F7085</color>    <!-- slate -->
+    <color name="hue_teal">#3E7F74</color>    <!-- pine -->
+    <color name="hue_amber">#A57A2A</color>   <!-- ochre -->
+    <color name="hue_rose">#A9573D</color>    <!-- clay -->
+    <color name="hue_gray">#6E786F</color>
+
+    <color name="favorite">#C9962B</color>
     <color name="white">#FFFFFF</color>
-    <color name="light_gray">#F4F5F7</color>
-    <color name="gray_text">#666666</color>
-    <color name="dark_text">#1C1B1F</color>
-
-    <!-- Priority & Status Colors -->
-    <color name="priority_high">#FFD8E4</color>
-    <color name="priority_medium">#E8DEF8</color>
-    <color name="priority_low">#E6F4EA</color>
-
-    <!-- Alert / Accent Colors -->
-    <color name="danger_red">#B3261E</color>
-    <color name="danger_container">#F9DEDC</color>
-    <color name="success_green">#2E7D32</color>
-    <color name="warning_orange">#ED6C02</color>
-    <color name="warning_container">#FFF3E0</color>
+    <color name="transparent">#00000000</color>
+    <color name="scrim">#66000000</color>
 </resources>

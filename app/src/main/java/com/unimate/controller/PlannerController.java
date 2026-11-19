@@ -80,6 +80,16 @@ public class PlannerController {
         return eventRepo.getAllEvents();
     }
 
+    /** Looks up a single event (used when editing). Returns null if it no longer exists. */
+    public Event getEventById(long id) {
+        List<Event> all = eventRepo.getAllEvents();
+        if (all == null) return null;
+        for (Event event : all) {
+            if (event.getId() == id) return event;
+        }
+        return null;
+    }
+
     /**
      * Proposes a weekly study plan. Does NOT save anything until approved.
      */

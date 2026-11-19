@@ -10,13 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.unimate.R;
 import com.unimate.dto.ScoredPlace;
 import com.unimate.model.StudyPlace;
+import com.unimate.view.ui.UiKit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class StudySpotAdapter extends RecyclerView.Adapter<StudySpotAdapter.SpotViewHolder> {
 
@@ -33,7 +35,7 @@ public class StudySpotAdapter extends RecyclerView.Adapter<StudySpotAdapter.Spot
     public StudySpotAdapter(Context context, List<ScoredPlace> scoredPlaces, List<Long> favoriteIds, OnSpotActionListener listener) {
         this.context = context;
         this.scoredPlaces = scoredPlaces != null ? scoredPlaces : new ArrayList<>();
-        this.favoriteIds = favoriteIds != null ? favoriteIds : new ArrayList<>();
+        this.favoriteIds = favoriteIds != null ? new ArrayList<>(favoriteIds) : new ArrayList<>();
         this.listener = listener;
     }
 
@@ -55,8 +57,7 @@ public class StudySpotAdapter extends RecyclerView.Adapter<StudySpotAdapter.Spot
 
     @Override
     public void onBindViewHolder(@NonNull SpotViewHolder holder, int position) {
-        ScoredPlace item = scoredPlaces.get(position);
-        holder.bind(item);
+        holder.bind(scoredPlaces.get(position));
     }
 
     @Override
@@ -66,47 +67,62 @@ public class StudySpotAdapter extends RecyclerView.Adapter<StudySpotAdapter.Spot
 
     class SpotViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textName;
-        TextView textAddress;
-        TextView textScore;
-        TextView textBreakdown;
-        Chip chipCategory;
-        Chip chipWifi;
-        Chip chipOutlets;
-        ImageButton btnFavorite;
+        final TextView textName, textAddress, textScore, textBreakdown;
+        final TextView textWifi, textOutlets, textNoise, textPrice;
+        final LinearProgressIndicator progressScore;
+        final ImageButton btnFavorite;
 
-        public SpotViewHolder(@NonNull View itemView) {
+        SpotViewHolder(@NonNull View itemView) {
             super(itemView);
             textName = itemView.findViewById(R.id.textSpotName);
             textAddress = itemView.findViewById(R.id.textSpotAddress);
             textScore = itemView.findViewById(R.id.textSpotScore);
             textBreakdown = itemView.findViewById(R.id.textSpotBreakdown);
-            chipCategory = itemView.findViewById(R.id.chipSpotCategory);
-            chipWifi = itemView.findViewById(R.id.chipSpotWifi);
-            chipOutlets = itemView.findViewById(R.id.chipSpotOutlets);
+            textWifi = itemView.findViewById(R.id.textSpotWifi);
+            textOutlets = itemView.findViewById(R.id.textSpotOutlets);
+            textNoise = itemView.findViewById(R.id.textSpotNoise);
+            textPrice = itemView.findViewById(R.id.textSpotPrice);
+            progressScore = itemView.findViewById(R.id.progressSpotScore);
             btnFavorite = itemView.findViewById(R.id.btnFavSpot);
+
+            UiKit.setLeadingIcon(textWifi, R.drawable.ic_wifi, R.color.text_secondary, 14);
+            UiKit.setLeadingIcon(textOutlets, R.drawable.ic_power, R.color.text_secondary, 14);
+            UiKit.setLeadingIcon(textNoise, R.drawable.ic_volume, R.color.text_secondary, 14);
+            UiKit.setLeadingIcon(textPrice, R.drawable.ic_budget, R.color.text_secondary, 14);
         }
 
-        public void bind(ScoredPlace item) {
+        void bind(ScoredPlace item) {
             StudyPlace place = item.getPlace();
             if (place == null) return;
 
             textName.setText(place.getName());
-            textAddress.setText(place.getAddress());
-            textScore.setText(String.format("%.0f/100", item.getScore()));
-            textBreakdown.setText(item.getBreakdown());
-            chipCategory.setText(place.getCategory());
+            String category = place.getCategory() != null ? place.getCategory() : "Study spot";
+            String address = place.getAddress() != null ? place.getAddress() : "";
+            textAddress.setText(address.isEmpty() ? category : category + " · " + address);
 
-            chipWifi.setVisibility(place.isWifi() ? View.VISIBLE : View.GONE);
-            chipOutlets.setVisibility(place.isOutlets() ? View.VISIBLE : View.GONE);
+            int score = (int) Math.round(Math.max(0, Math.min(100, item.getScore())));
+            textScore.setText(String.format(Locale.getDefault(), "%d", score));
+            progressScore.setProgressCompat(score, false);
+
+            String breakdown = item.getBreakdown();
+            // The engine's raw breakdown duplicates the score; keep it for accessibility only.
+            textBreakdown.setVisibility(View.GONE);
+            textBreakdown.setText(breakdown);
+
+            textWifi.setVisibility(place.isWifi() ? View.VISIBLE : View.GONE);
+            textOutlets.setVisibility(place.isOutlets() ? View.VISIBLE : View.GONE);
+            textNoise.setText(UiKit.noiseLabel(place.getNoiseLevel()));
+            textPrice.setText(UiKit.priceLabel(place.getPriceLevel()));
 
             boolean isFav = favoriteIds.contains(place.getId());
             btnFavorite.setImageResource(isFav ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
+            btnFavorite.setImageTintList(isFav ? null : UiKit.colorList(context, R.color.text_tertiary));
+            btnFavorite.setContentDescription(isFav ? "Remove " + place.getName() + " from saved" : "Save " + place.getName());
 
+            itemView.setContentDescription(place.getName() + ", match score " + score);
             itemView.setOnClickListener(v -> {
                 if (listener != null) listener.onSpotClick(place);
             });
-
             btnFavorite.setOnClickListener(v -> {
                 if (listener != null) listener.onSpotFavoriteToggle(place);
             });

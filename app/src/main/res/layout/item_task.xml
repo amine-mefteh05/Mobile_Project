@@ -1,125 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Task row. Flat: rows are separated by hairline dividers (UiKit.addDividers), not boxed. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardTask"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="14dp">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkBoxTaskDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginStart="-10dp"
+        android:minWidth="44dp"
+        android:minHeight="44dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <CheckBox
-            android:id="@+id/checkBoxTaskDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textTaskTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Task Title"
-                    android:textColor="@color/dark_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textTaskOverdue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_overdue_tag"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
-                    android:text="OVERDUE"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-            </LinearLayout>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textTaskDescription"
+                android:id="@+id/textTaskTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                android:textSize="16sp"
+                tools:text="Finish Android Mobile Project" />
+
+            <TextView
+                android:id="@+id/textTaskOverdue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:maxLines="2"
-                android:text="Description..."
-                android:textColor="@color/gray_text"
-                android:textSize="13sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTaskCategory"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="UNIVERSITY"
-                    android:textSize="11sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipTaskPriority"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="6dp"
-                    android:text="MEDIUM"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/textTaskDeadline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Due: 2025-05-10"
-                    android:textColor="@color/gray_text"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/textTaskDuration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="60 mins"
-                    android:textColor="@color/gray_text"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_tag"
+                android:backgroundTint="@color/danger_soft"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
+                android:text="Overdue"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                android:textColor="@color/danger"
+                android:textSize="11sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnDeleteTask"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Task"
-            android:src="@drawable/ic_delete"
-            app:tint="@color/gray_text" />
+        <TextView
+            android:id="@+id/textTaskDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.UniMate.Caption"
+            tools:text="Implement the remaining screens and polish" />
 
+        <!-- Meta: ● High   Project   ⚑ Due in 3 days   120 min -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textTaskPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                tools:text="High" />
+
+            <TextView
+                android:id="@+id/textTaskCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                android:textColor="@color/text_tertiary"
+                tools:text="Project" />
+
+            <ImageView
+                android:id="@+id/iconTaskDue"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="12dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_flag"
+                app:tint="@color/text_tertiary" />
+
+            <TextView
+                android:id="@+id/textTaskDeadline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                tools:text="Due tomorrow" />
+
+            <TextView
+                android:id="@+id/textTaskDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                android:textColor="@color/text_tertiary"
+                tools:text="60 min" />
+        </LinearLayout>
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+
+    <ImageButton
+        android:id="@+id/btnDeleteTask"
+        android:layout_width="@dimen/touch_target"
+        android:layout_height="@dimen/touch_target"
+        android:layout_marginEnd="-12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete task"
+        android:padding="13dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/text_tertiary" />
+</LinearLayout>

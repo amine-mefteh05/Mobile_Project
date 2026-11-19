@@ -1,184 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarTaskForm"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <!-- Title Input -->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/layoutTaskTitle"
+                style="@style/Widget.UniMate.TextInput.Headline"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Task Title *">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTaskTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences" />
+                    android:background="@null"
+                    android:fontFamily="serif"
+                    android:hint="What needs doing?"
+                    android:paddingHorizontal="0dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="26sp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLines="2" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Description Input -->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Description">
+                android:layout_marginTop="@dimen/space_m"
+                android:hint="Notes (optional)">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTaskDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:minLines="2" />
+                    android:gravity="top"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Deadline Input -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Deadline (YYYY-MM-DD) *">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTaskDeadline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Duration Input -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Estimated Duration (Minutes) *">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTaskDuration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="60" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Category Spinner -->
+            <!-- Category -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/space_xl"
                 android:text="Category"
-                android:textColor="@color/dark_text"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
 
-            <Spinner
-                android:id="@+id/spinnerTaskCategory"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupTaskCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@color/white"
-                android:padding="12dp" />
+                android:layout_marginTop="@dimen/space_s"
+                app:checkedChip="@id/chipTaskUniversity"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
-            <!-- Priority Radio Group -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTaskUniversity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="UNIVERSITY"
+                    android:text="University" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTaskProject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="PROJECT"
+                    android:text="Project" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTaskExam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="EXAM"
+                    android:text="Exam" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTaskPersonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="PERSONAL"
+                    android:text="Personal" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Priority -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/space_l"
                 android:text="Priority"
-                android:textColor="@color/dark_text"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
 
-            <RadioGroup
-                android:id="@+id/radioGroupPriority"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/togglePriority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/space_s"
+                app:checkedButton="@id/radioMedium"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/radioLow"
+                    style="@style/Widget.UniMate.Segment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Low" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/radioMedium"
+                    style="@style/Widget.UniMate.Segment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/radioHigh"
+                    style="@style/Widget.UniMate.Segment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="High" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Schedule -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="Schedule"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radioLow"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutTaskDeadline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="LOW" />
+                    android:layout_weight="1.4"
+                    android:hint="Deadline"
+                    app:startIconDrawable="@drawable/ic_flag">
 
-                <RadioButton
-                    android:id="@+id/radioMedium"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTaskDeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        tools:text="Fri, 21 Nov" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutTaskDuration"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_m"
                     android:layout_weight="1"
-                    android:checked="true"
-                    android:text="MEDIUM" />
+                    android:hint="Effort"
+                    app:suffixText="min">
 
-                <RadioButton
-                    android:id="@+id/radioHigh"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="HIGH" />
-            </RadioGroup>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTaskDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="number"
+                        android:maxLength="4" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <!-- Reminder Switch & Time Picker -->
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchReminder"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textTaskDeadlineHint"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Set Deadline Reminder"
-                android:textColor="@color/dark_text" />
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="6dp"
+                android:text="Effort is how long you expect it to take — smart planning uses it."
+                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutReminderTime"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Reminder: a settings row set off by a hairline, not a card -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Reminder Time (HH:mm)"
-                android:visibility="gone">
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/space_xl"
+                android:background="@color/stroke" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editReminderTime"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:text="09:00" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="vertical"
+                    android:paddingVertical="14dp">
 
-            <!-- Save Task Button -->
-            <Button
-                android:id="@+id/btnSaveTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/purple_primary"
-                android:text="Save Task"
-                android:textColor="@color/white" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="@dimen/icon_tile"
+                            android:layout_height="@dimen/icon_tile"
+                            android:background="@drawable/bg_icon_tile"
+                            android:importantForAccessibility="no"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_bell"
+                            app:tint="@color/brand" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_m"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Remind me"
+                                android:textAppearance="@style/TextAppearance.UniMate.Subtitle" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="A notification on the deadline day"
+                                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchReminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="Remind me" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutReminderTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="Reminder time"
+                        android:visibility="gone"
+                        app:startIconDrawable="@drawable/ic_clock"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editReminderTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:fontFeatureSettings="tnum"
+                            android:inputType="none"
+                            android:text="09:00" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Pinned action bar -->
+    <LinearLayout
+        android:id="@+id/bottomBarTaskForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/stroke" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/gutter"
+            android:layout_marginVertical="@dimen/space_m"
+            android:text="Save task" />
+    </LinearLayout>
 </LinearLayout>

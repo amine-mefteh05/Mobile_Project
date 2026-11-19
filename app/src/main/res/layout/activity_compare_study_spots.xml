@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarCompare"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollCompare"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <!-- Selection Dropdowns -->
+            <!-- Pickers -->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.UniMate.TextInput.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Select First StudySpot">
+                android:hint="First spot">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/spinnerCompareSpot1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,159 +42,322 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.UniMate.TextInput.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Select Second StudySpot">
+                android:layout_marginTop="@dimen/space_m"
+                android:hint="Second spot">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/spinnerCompareSpot2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Comparison Table Row -->
-            <LinearLayout
+            <!-- Verdict -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCompareVerdict"
+                style="@style/Widget.UniMate.Card.Assistant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/space_xl">
 
-                <!-- Spot 1 Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/card_padding">
 
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:layout_marginTop="1dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_sparkle"
+                        app:tint="@color/brand" />
+
+                    <TextView
+                        android:id="@+id/textCompareVerdict"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body"
+                        tools:text="Central Library is the better match for your preferences — quieter and free." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Table -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCompareTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s">
+
+                <LinearLayout
+                    android:id="@+id/tableCompare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/card_padding"
+                    android:paddingVertical="@dimen/space_s">
+
+                    <!-- Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/space_s">
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.9" />
 
                         <TextView
                             android:id="@+id/textSpot1Name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Spot 1"
-                            android:textColor="@color/purple_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/textSpot1Price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Price: Free" />
-
-                        <TextView
-                            android:id="@+id/textSpot1Noise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Noise: Quiet" />
-
-                        <TextView
-                            android:id="@+id/textSpot1Wifi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Wi-Fi: Yes" />
-
-                        <TextView
-                            android:id="@+id/textSpot1Outlets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Outlets: Yes" />
-
-                        <TextView
-                            android:id="@+id/textSpot1Score"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Score: 85/100"
-                            android:textColor="@color/purple_primary_variant"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="match_parent" />
-
-                <!-- Spot 2 Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                            tools:text="Central Library" />
 
                         <TextView
                             android:id="@+id/textSpot2Name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Spot 2"
-                            android:textColor="@color/purple_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                            tools:text="Café Noir" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Score -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textSpot2Price"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Price: $$" />
+                            android:layout_weight="0.9"
+                            android:text="Match"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
 
                         <TextView
-                            android:id="@+id/textSpot2Noise"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/textSpot1Score"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Noise: Moderate" />
-
-                        <TextView
-                            android:id="@+id/textSpot2Wifi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Wi-Fi: Yes" />
-
-                        <TextView
-                            android:id="@+id/textSpot2Outlets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Outlets: Yes" />
+                            android:layout_weight="1"
+                            android:fontFeatureSettings="tnum"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="82" />
 
                         <TextView
                             android:id="@+id/textSpot2Score"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Score: 78/100"
-                            android:textColor="@color/purple_primary_variant"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:fontFeatureSettings="tnum"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="64" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/stroke" />
 
+                    <!-- Price -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="Price"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                        <TextView
+                            android:id="@+id/textSpot1Price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Free" />
+
+                        <TextView
+                            android:id="@+id/textSpot2Price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Affordable" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Noise -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="Noise"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                        <TextView
+                            android:id="@+id/textSpot1Noise"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Quiet" />
+
+                        <TextView
+                            android:id="@+id/textSpot2Noise"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Busy" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Wi-Fi -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="Wi-Fi"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                        <TextView
+                            android:id="@+id/textSpot1Wifi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Yes" />
+
+                        <TextView
+                            android:id="@+id/textSpot2Wifi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Yes" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/stroke" />
+
+                    <!-- Outlets -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="Outlets"
+                            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+                        <TextView
+                            android:id="@+id/textSpot1Outlets"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="No" />
+
+                        <TextView
+                            android:id="@+id/textSpot2Outlets"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.UniMate.Body"
+                            tools:text="Yes" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textCompareLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:layout_marginStart="4dp"
+                android:text="Highlighted values are the better of the two."
+                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+            <include
+                android:id="@+id/emptyCompare"
+                layout="@layout/view_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One day in the Planner week strip. Selection state drives colors. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="2dp"
+    android:layout_weight="1"
+    android:background="@drawable/bg_day_cell"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/textDayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:text="Mon"
+        android:textAppearance="@style/TextAppearance.UniMate.Label"
+        android:textColor="@color/day_text_secondary" />
+
+    <TextView
+        android:id="@+id/textDayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:duplicateParentState="true"
+        android:fontFeatureSettings="tnum"
+        android:text="17"
+        android:textAppearance="@style/TextAppearance.UniMate.Headline"
+        android:textColor="@color/day_text_primary" />
+
+    <View
+        android:id="@+id/viewTodayDot"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_circle"
+        android:backgroundTint="@color/brand"
+        android:visibility="invisible" />
+</LinearLayout>

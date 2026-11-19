@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UniMate — "Sage" identity, dark theme. Deep green-black neutrals; the light green fill stays. -->
+<resources>
+    <color name="brand_fill">#A8D5B5</color>
+    <color name="on_brand">#132219</color>
+    <color name="brand_mid">#8CC49E</color>
+    <color name="brand">#9CCFAB</color>
+    <color name="brand_pressed">#BFE3CA</color>
+    <color name="brand_soft">#1E2C22</color>
+    <color name="on_brand_soft">#BFE3CA</color>
+    <color name="accent">#2C4234</color>
+
+    <color name="ai_surface">#162019</color>
+    <color name="ai_stroke">#26382B</color>
+
+    <color name="bg">#0E1310</color>
+    <color name="surface">#151B17</color>
+    <color name="surface_muted">#1C241E</color>
+    <color name="stroke">#242E27</color>
+    <color name="stroke_strong">#334036</color>
+
+    <color name="text_primary">#E5ECE6</color>
+    <color name="text_secondary">#A2AEA4</color>
+    <color name="text_tertiary">#748176</color>
+
+    <color name="success">#8CC49E</color>
+    <color name="success_soft">#1B2A20</color>
+    <color name="warning">#E2B266</color>
+    <color name="warning_soft">#2A2216</color>
+    <color name="danger">#EE8C82</color>
+    <color name="danger_soft">#301B19</color>
+
+    <color name="hue_violet">#B9A6C6</color>
+    <color name="hue_blue">#9AB6C8</color>
+    <color name="hue_teal">#86C2B6</color>
+    <color name="hue_amber">#D9B46A</color>
+    <color name="hue_rose">#DD9A82</color>
+    <color name="hue_gray">#A2AEA4</color>
+
+    <color name="favorite">#E3B85A</color>
+</resources>

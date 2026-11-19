@@ -1,92 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarProposal"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_primary"
-        app:titleTextColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Review Smart Weekly Study Plan"
-            android:textColor="@color/dark_text"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textProposalExplanation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Explanation text..."
-            android:textColor="@color/purple_primary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textProposalUnscheduled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Unscheduled tasks: 0"
-            android:textColor="@color/gray_text"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Proposed Study Sessions (Max 90m + 15m breaks):"
-            android:textColor="@color/dark_text"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewProposals"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1" />
-
-        <!-- Approve / Cancel Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/space_xl">
 
-            <Button
+            <!-- Assistant summary -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.UniMate.Card.Assistant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_s"
+                            android:layout_height="@dimen/icon_s"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_sparkle"
+                            app:tint="@color/brand" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="Suggested plan"
+                            android:textAppearance="@style/TextAppearance.UniMate.Overline"
+                            android:textColor="@color/brand" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textProposalHeadline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:textAppearance="@style/TextAppearance.UniMate.Title"
+                        tools:text="5 study sessions this week" />
+
+                    <TextView
+                        android:id="@+id/textProposalExplanation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:lineSpacingMultiplier="1.2"
+                        android:textAppearance="@style/TextAppearance.UniMate.BodySecondary"
+                        tools:text="Sessions are placed in your free time before each deadline, highest priority first." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Didn't fit -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardProposalUnscheduled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/warning_soft"
+                app:strokeWidth="0dp"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:layout_marginTop="1dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_warning"
+                        app:tint="@color/warning" />
+
+                    <TextView
+                        android:id="@+id/textProposalUnscheduled"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body"
+                        tools:text="2 tasks didn't fit. Free up time or widen your study day in Profile." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Sessions -->
+            <TextView
+                android:id="@+id/textProposalSessionsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:accessibilityHeading="true"
+                android:text="Sessions"
+                android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+            <TextView
+                android:id="@+id/textProposalSessionsHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Remove any you don't want, then add the rest to your planner."
+                android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewProposals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:nestedScrollingEnabled="false" />
+
+            <include
+                android:id="@+id/emptyProposals"
+                layout="@layout/view_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomBarProposal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/stroke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/gutter"
+            android:paddingVertical="@dimen/space_m">
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelPlan"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.UniMate.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Discard Proposal" />
+                android:text="Discard" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnApprovePlan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/purple_primary"
-                android:text="Approve &amp; Save Plan"
-                android:textColor="@color/white" />
+                android:layout_marginStart="@dimen/space_m"
+                android:layout_weight="1.6"
+                android:text="Add to planner"
+                app:icon="@drawable/ic_check" />
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

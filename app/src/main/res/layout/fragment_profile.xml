@@ -1,352 +1,585 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Profile & settings. Structure: identity → this week → budget shortcut →
+    grouped settings sections → save. Section titles are overlines; each group is one card.
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/bg"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="@dimen/gutter"
+        android:paddingTop="16dp"
+        android:paddingBottom="@dimen/space_xxl">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Student Profile &amp; Preferences"
-            android:textColor="@color/dark_text"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="4dp"
+            android:accessibilityHeading="true"
+            android:text="Profile"
+            android:textAppearance="@style/TextAppearance.UniMate.Display" />
 
-        <!-- Profile Details Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Identity -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            android:layout_marginTop="@dimen/space_xl"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textProfileInitials"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_circle"
+                android:backgroundTint="@color/brand_soft"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:textAppearance="@style/TextAppearance.UniMate.Title"
+                android:textColor="@color/on_brand_soft"
+                tools:text="CM" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginStart="@dimen/space_l"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textProfileDisplayName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Personal Information"
-                    android:textColor="@color/purple_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.UniMate.Title"
+                    tools:text="Chedi Mefteh" />
 
-                <EditText
-                    android:id="@+id/editProfileName"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textProfileMeta"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="Full Name" />
-
-                <EditText
-                    android:id="@+id/editProfileUniv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="University Name" />
-
-                <EditText
-                    android:id="@+id/editProfileLevel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="Study Level (e.g. Year 3)" />
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.UniMate.Caption"
+                    tools:text="ISI Ariana · Year 3" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-        <!-- Study Day Window Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- This week -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:accessibilityHeading="true"
+            android:text="This week"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            android:layout_marginStart="-14dp"
+            android:layout_marginTop="@dimen/space_m"
+            android:baselineAligned="false"
+            android:divider="@drawable/divider_hairline"
+            android:dividerPadding="6dp"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <include
+                android:id="@+id/statProfileTasks"
+                layout="@layout/view_stat_tile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/statProfileStudy"
+                layout="@layout/view_stat_tile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/statProfileSpent"
+                layout="@layout/view_stat_tile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Budget shortcut -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnProfileOpenBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:clickable="true"
+            android:contentDescription="Open weekly budget"
+            android:focusable="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/card_padding">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Study Day Window (Used by Smart Assistant)"
-                    android:textColor="@color/purple_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="@dimen/icon_tile"
+                    android:layout_height="@dimen/icon_tile"
+                    android:background="@drawable/bg_icon_tile"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_budget"
+                    app:tint="@color/brand" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="@dimen/space_m"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/editProfileDayStart"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Day Start (HH:mm)"
-                        android:text="08:00" />
+                        android:text="Weekly budget"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle" />
 
-                    <EditText
-                        android:id="@+id/editProfileDayEnd"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/textProfileBudgetCaption"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:hint="Day End (HH:mm)"
-                        android:text="20:00" />
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.UniMate.Caption"
+                        tools:text="42.50 of 100.00 TND spent" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/icon_m"
+                    android:layout_height="@dimen/icon_m"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/text_tertiary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- StudySpot Preference Weights Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- ============ Personal information ============ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:accessibilityHeading="true"
+            android:text="Personal information"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            android:layout_marginTop="@dimen/space_s">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingVertical="6dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="StudySpot Ranking Preference Weights"
-                    android:textColor="@color/purple_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:hint="Full name"
+                    app:startIconDrawable="@drawable/ic_profile">
 
-                <!-- Quiet Weight -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName|textCapWords"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:hint="University"
+                    app:startIconDrawable="@drawable/ic_school">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileUniv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:hint="Study level"
+                    app:placeholderText="e.g. Year 3"
+                    app:startIconDrawable="@drawable/ic_book">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ============ Study day ============ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:accessibilityHeading="true"
+            android:text="Study day"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Smart planning only schedules sessions inside this window."
+            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Starts"
+                    app:startIconDrawable="@drawable/ic_clock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileDayStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="none"
+                        tools:text="08:00" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_m"
+                    android:layout_weight="1"
+                    android:hint="Ends"
+                    app:startIconDrawable="@drawable/ic_clock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileDayEnd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="none"
+                        tools:text="20:00" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ============ Study spot ranking ============ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:accessibilityHeading="true"
+            android:text="Study spot ranking"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tell UniMate what matters most when it ranks places for you."
+            android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="6dp">
+
+                <!-- Quiet -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_volume"
+                        app:tint="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
                         android:layout_weight="1"
-                        android:text="Quietness Weight:" />
+                        android:text="Quietness"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body" />
 
                     <TextView
                         android:id="@+id/textQuietWeightVal"
-                        android:layout_width="32dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textStyle="bold" />
+                        android:fontFeatureSettings="tnum"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                        tools:text="50" />
                 </LinearLayout>
 
-                <SeekBar
+                <com.google.android.material.slider.Slider
                     android:id="@+id/seekQuietWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="50" />
+                    android:contentDescription="Quietness weight"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:labelBehavior="gone"
+                    app:tickVisible="false" />
 
-                <!-- Wi-Fi Weight -->
+                <!-- Wi-Fi -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_wifi"
+                        app:tint="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
                         android:layout_weight="1"
-                        android:text="Wi-Fi Weight:" />
+                        android:text="Wi-Fi"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body" />
 
                     <TextView
                         android:id="@+id/textWifiWeightVal"
-                        android:layout_width="32dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textStyle="bold" />
+                        android:fontFeatureSettings="tnum"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                        tools:text="50" />
                 </LinearLayout>
 
-                <SeekBar
+                <com.google.android.material.slider.Slider
                     android:id="@+id/seekWifiWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="50" />
+                    android:contentDescription="Wi-Fi weight"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:labelBehavior="gone"
+                    app:tickVisible="false" />
 
-                <!-- Budget Weight -->
+                <!-- Affordability -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_budget"
+                        app:tint="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
                         android:layout_weight="1"
-                        android:text="Affordability Weight:" />
+                        android:text="Affordability"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body" />
 
                     <TextView
                         android:id="@+id/textBudgetWeightVal"
-                        android:layout_width="32dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textStyle="bold" />
+                        android:fontFeatureSettings="tnum"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                        tools:text="50" />
                 </LinearLayout>
 
-                <SeekBar
+                <com.google.android.material.slider.Slider
                     android:id="@+id/seekBudgetWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="50" />
+                    android:contentDescription="Affordability weight"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:labelBehavior="gone"
+                    app:tickVisible="false" />
 
-                <!-- Distance Weight -->
+                <!-- Distance -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_m"
+                        android:layout_height="@dimen/icon_m"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_location"
+                        app:tint="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
                         android:layout_weight="1"
-                        android:text="Distance Proximity Weight:" />
+                        android:text="Proximity"
+                        android:textAppearance="@style/TextAppearance.UniMate.Body" />
 
                     <TextView
                         android:id="@+id/textDistanceWeightVal"
-                        android:layout_width="32dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textStyle="bold" />
+                        android:fontFeatureSettings="tnum"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+                        tools:text="50" />
                 </LinearLayout>
 
-                <SeekBar
+                <com.google.android.material.slider.Slider
                     android:id="@+id/seekDistanceWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="50" />
+                    android:contentDescription="Proximity weight"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:labelBehavior="gone"
+                    app:tickVisible="false" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-        <!-- Notifications Settings Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- ============ Notifications ============ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:accessibilityHeading="true"
+            android:text="Notifications"
+            android:textAppearance="@style/TextAppearance.UniMate.Overline" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            android:layout_marginTop="@dimen/space_s">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switchProfileNotifs"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="@dimen/icon_tile"
+                    android:layout_height="@dimen/icon_tile"
+                    android:background="@drawable/bg_icon_tile"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_bell"
+                    app:tint="@color/brand" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Enable Task Reminders &amp; Notifications"
-                    android:textColor="@color/dark_text"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_marginStart="@dimen/space_m"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-        <!-- Save Profile Button -->
-        <Button
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Task reminders"
+                        android:textAppearance="@style/TextAppearance.UniMate.Subtitle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Get a notification before a deadline"
+                        android:textAppearance="@style/TextAppearance.UniMate.Caption" />
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchProfileNotifs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:contentDescription="Task reminders" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSaveProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/purple_primary"
-            android:text="Save Profile &amp; Preferences"
-            android:textColor="@color/white" />
-
-        <!-- Weekly Summary & Budget Access Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/purple_container"
-            app:cardCornerRadius="12dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Weekly Summary &amp; Productivity"
-                    android:textColor="@color/on_purple_container"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textSummaryTasks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Completed: 0/0 (0%)"
-                    android:textColor="@color/on_purple_container" />
-
-                <TextView
-                    android:id="@+id/textSummaryStudyHours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Study Sessions: 0 hrs"
-                    android:textColor="@color/on_purple_container" />
-
-                <TextView
-                    android:id="@+id/textSummarySpent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Spent This Week: 0.00 TND"
-                    android:textColor="@color/on_purple_container" />
-
-                <Button
-                    android:id="@+id/btnProfileOpenBudget"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Manage Weekly Budget" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_marginTop="@dimen/space_xl"
+            android:text="Save changes" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

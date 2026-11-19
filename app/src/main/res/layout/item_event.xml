@@ -1,79 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Agenda row: time column · coloured rule · title. Reads like a timeline, not a stack of cards. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="68dp"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <!-- Time column -->
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textEventStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFeatureSettings="tnum"
+            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+            tools:text="09:00" />
+
+        <TextView
+            android:id="@+id/textEventEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFeatureSettings="tnum"
+            android:textAppearance="@style/TextAppearance.UniMate.Caption"
+            android:textColor="@color/text_tertiary"
+            tools:text="10:30" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewEventAccent"
+        android:layout_width="3dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/bg_accent_bar" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textEventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.UniMate.Subtitle"
+            android:textSize="16sp"
+            tools:text="Mobile Architecture Lecture" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <!-- Type is coloured text, matching the rule; no pill. -->
             <TextView
-                android:id="@+id/textEventTitle"
+                android:id="@+id/textEventType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Event Title"
-                android:textColor="@color/dark_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                tools:text="Lecture" />
+
+            <ImageView
+                android:id="@+id/iconEventLocation"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="12dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_location"
+                app:tint="@color/text_tertiary" />
 
             <TextView
-                android:id="@+id/textEventTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/textEventLocation"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="09:00 - 10:30"
-                android:textColor="@color/purple_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipEventType"
-                    style="@style/Widget.Material3.Chip.Suggestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="LECTURE"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/textEventLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Amphi 3"
-                    android:textColor="@color/gray_text"
-                    android:textSize="13sp" />
-            </LinearLayout>
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.UniMate.Label"
+                android:textColor="@color/text_secondary"
+                tools:text="Amphi 3" />
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/btnDeleteEvent"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Event"
-            android:src="@drawable/ic_delete"
-            app:tint="@color/gray_text" />
-
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+
+    <ImageButton
+        android:id="@+id/btnDeleteEvent"
+        android:layout_width="@dimen/touch_target"
+        android:layout_height="@dimen/touch_target"
+        android:layout_marginEnd="-12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete event"
+        android:padding="13dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/text_tertiary" />
+</LinearLayout>

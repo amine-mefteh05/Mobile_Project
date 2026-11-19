@@ -5,18 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
 import com.unimate.R;
 import com.unimate.model.Expense;
+import com.unimate.view.ui.UiKit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
@@ -48,8 +48,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
-        Expense expense = expenses.get(position);
-        holder.bind(expense);
+        holder.bind(expenses.get(position));
     }
 
     @Override
@@ -59,28 +58,32 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textDescription;
-        TextView textDate;
-        TextView textAmount;
-        Chip chipCategory;
-        ImageButton btnDelete;
+        final TextView textDescription, textDate, textAmount;
+        final ImageView iconCategory;
+        final ImageButton btnDelete;
 
-        public ExpenseViewHolder(@NonNull View itemView) {
+        ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             textDescription = itemView.findViewById(R.id.textExpenseDesc);
             textDate = itemView.findViewById(R.id.textExpenseDate);
             textAmount = itemView.findViewById(R.id.textExpenseAmount);
-            chipCategory = itemView.findViewById(R.id.chipExpenseCategory);
+            iconCategory = itemView.findViewById(R.id.iconExpenseCategory);
             btnDelete = itemView.findViewById(R.id.btnDeleteExpense);
         }
 
-        public void bind(Expense expense) {
+        void bind(Expense expense) {
+            Expense.Category category = expense.getCategory() != null ? expense.getCategory() : Expense.Category.OTHER;
+            int hue = UiKit.expenseColor(category);
+
             textDescription.setText(expense.getDescription());
-            textDate.setText(expense.getDate());
-            textAmount.setText(String.format(Locale.getDefault(), "%.2f TND", expense.getAmount()));
+            textDate.setText(UiKit.label(category) + " · " + UiKit.prettyDate(expense.getDate()));
+            textAmount.setText(UiKit.money(expense.getAmount()));
 
-            chipCategory.setText(expense.getCategory() != null ? expense.getCategory().name() : "OTHER");
+            iconCategory.setImageResource(UiKit.expenseIcon(category));
+            iconCategory.setImageTintList(UiKit.colorList(context, hue));
+            iconCategory.setBackgroundTintList(UiKit.softTint(context, hue));
 
+            btnDelete.setContentDescription("Delete " + expense.getDescription());
             btnDelete.setOnClickListener(v -> {
                 if (listener != null) listener.onExpenseDelete(expense);
             });
